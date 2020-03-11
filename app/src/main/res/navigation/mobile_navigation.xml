@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.mnaufalazwar.sibandarapp.ui.home.HomeFragment"
+        android:label="beranda"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_sell"
+            app:destination="@id/nav_sell" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_purchase"
+            app:destination="@id/nav_purchase" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_finance"
+            app:destination="@id/nav_finance" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_report"
+            app:destination="@id/nav_report" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_sell"
+        android:name="com.mnaufalazwar.sibandarapp.ui.sell.SellFragment"
+        android:label="jual"
+        tools:layout="@layout/fragment_sell" >
+        <action
+            android:id="@+id/action_nav_sell_to_addNewOrderFrag"
+            app:destination="@id/addNewOrderFrag" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_purchase"
+        android:name="com.mnaufalazwar.sibandarapp.ui.purchase.PurchaseFragment"
+        android:label="beli"
+        tools:layout="@layout/fragment_purchase" />
+
+    <fragment
+        android:id="@+id/nav_finance"
+        android:name="com.mnaufalazwar.sibandarapp.ui.financial.FinancialFragment"
+        android:label="keuangan"
+        tools:layout="@layout/fragment_finance" />
+
+    <fragment
+        android:id="@+id/nav_account"
+        android:name="com.mnaufalazwar.sibandarapp.ui.account.AccountFragment"
+        android:label="akun"
+        tools:layout="@layout/fragment_account" />
+
+    <fragment
+        android:id="@+id/nav_report"
+        android:name="com.mnaufalazwar.sibandarapp.ui.report.ReportFragment"
+        android:label="laporan"
+        tools:layout="@layout/fragment_report" />
+
+    <fragment
+        android:id="@+id/nav_setting"
+        android:name="com.mnaufalazwar.sibandarapp.ui.setting.SettingFragment"
+        android:label="pengaturan"
+        tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/addNewOrderFrag"
+        android:name="com.mnaufalazwar.sibandarapp.ui.sell.AddNewOrderFrag"
+        android:label="fragment_add_new_order"
+        tools:layout="@layout/fragment_add_new_order" />
+
+</navigation>

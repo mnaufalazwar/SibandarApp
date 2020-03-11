@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_sell"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="jual" />
+        <item
+            android:id="@+id/nav_purchase"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="beli" />
+        <item
+            android:id="@+id/nav_finance"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="keuangan" />
+        <item
+            android:id="@+id/nav_report"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="laporan" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_account"
+                android:icon="@drawable/ic_menu_share"
+                android:title="akun" />
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_menu_send"
+                android:title="pengaturan" />
+        </menu>
+    </item>
+
+</menu>
