@@ -78,7 +78,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
     public void onBindViewHolder(@NonNull PaymentViewHolder holder, int position) {
 
         holder.tvCustomerCompany.setText(list.get(position).getSubject());
-        holder.tvTotalTransaction.setText(list.get(position).getTotalTransaction());
+//        holder.tvTotalTransaction.setText(list.get(position).getTotalTransaction());
 
         holder.itemView.setOnClickListener(new CustomOnItemClickListener(position, new CustomOnItemClickListener.OnItemClickCallback() {
             @Override

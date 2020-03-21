@@ -18,18 +18,19 @@ import android.widget.EditText;
 
 import com.mnaufalazwar.sibandarapp.R;
 import com.mnaufalazwar.sibandarapp.activity.AddCustomerOrderActivity;
+import com.mnaufalazwar.sibandarapp.activity.AddPurchaseActivity;
 import com.mnaufalazwar.sibandarapp.model.CustomerModel;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddCustomerDialog extends DialogFragment implements View.OnClickListener {
+public class AddFarmerDialog extends DialogFragment implements View.OnClickListener {
 
     Button btnAdd, btnClose;
     EditText etCompany, etName, etPhone, etEmail, etAddress;
-    OnAddCustomerListener addCustomerListener;
+    OnAddFarmerListener addFarmerListener;
 
-    public AddCustomerDialog() {
+    public AddFarmerDialog() {
         // Required empty public constructor
     }
 
@@ -38,7 +39,7 @@ public class AddCustomerDialog extends DialogFragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_customer, container, false);
+        return inflater.inflate(R.layout.fragment_add_farmer_dialog, container, false);
     }
 
     @Override
@@ -61,9 +62,9 @@ public class AddCustomerDialog extends DialogFragment implements View.OnClickLis
         super.onAttach(context);
 
         Activity activity = getActivity();
-        if(activity instanceof AddCustomerOrderActivity){
-            AddCustomerOrderActivity addCustomerOrderActivity = (AddCustomerOrderActivity) activity;
-            this.addCustomerListener = addCustomerOrderActivity.addCustomerListener;
+        if(activity instanceof AddPurchaseActivity){
+            AddPurchaseActivity addPurchaseActivity = (AddPurchaseActivity) activity;
+            this.addFarmerListener = addPurchaseActivity.addFarmerListener;
         }
 
     }
@@ -72,7 +73,7 @@ public class AddCustomerDialog extends DialogFragment implements View.OnClickLis
     public void onDetach() {
         super.onDetach();
 
-        this.addCustomerListener = null;
+        this.addFarmerListener = null;
     }
 
     @Override
@@ -126,8 +127,8 @@ public class AddCustomerDialog extends DialogFragment implements View.OnClickLis
                     model.setDeliveryAddress(address);
                 }
 
-                if(addCustomerListener != null){
-                    addCustomerListener.onOptionChoosen(model);
+                if(addFarmerListener != null){
+                    addFarmerListener.onOptionChoosen(model);
                 }
 
                 getDialog().dismiss();
@@ -135,7 +136,7 @@ public class AddCustomerDialog extends DialogFragment implements View.OnClickLis
         }
     }
 
-    public interface OnAddCustomerListener{
+    public interface OnAddFarmerListener{
         void onOptionChoosen(CustomerModel customerModel);
     }
 }

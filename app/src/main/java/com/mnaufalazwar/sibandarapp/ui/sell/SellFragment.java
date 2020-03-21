@@ -156,5 +156,4 @@ public class SellFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
         }
     }
-
 }

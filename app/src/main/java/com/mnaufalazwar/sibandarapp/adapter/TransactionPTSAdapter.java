@@ -12,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mnaufalazwar.sibandarapp.R;
-import com.mnaufalazwar.sibandarapp.custom.CustomOnItemClickListener;
-import com.mnaufalazwar.sibandarapp.model.DataTransactionModel;
 import com.mnaufalazwar.sibandarapp.model.SingleOrderItemModel;
 
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ public class TransactionPTSAdapter extends RecyclerView.Adapter<TransactionPTSAd
     }
 
     public interface OnItemCheckCallback{
-        void onItemChecked(SingleOrderItemModel data, int position);
+        void onItemChecked(SingleOrderItemModel data, int position, boolean isChecked);
     }
 
     public TransactionPTSAdapter (Activity activity){
@@ -95,7 +93,7 @@ public class TransactionPTSAdapter extends RecyclerView.Adapter<TransactionPTSAd
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 list.get(position).setReady(isChecked);
-                onItemCheckCallback.onItemChecked(list.get(position), position);
+                onItemCheckCallback.onItemChecked(list.get(position), position, isChecked);
             }
         });
     }

@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -19,31 +18,20 @@ import android.widget.Toast;
 import com.mnaufalazwar.sibandarapp.R;
 import com.mnaufalazwar.sibandarapp.adapter.OrderItemAdapter;
 import com.mnaufalazwar.sibandarapp.model.CustomerModel;
-import com.mnaufalazwar.sibandarapp.model.DataTransactionModel;
 import com.mnaufalazwar.sibandarapp.model.SingleOrderItemModel;
 import com.mnaufalazwar.sibandarapp.ui.dialog.AddCustomerDialog;
+import com.mnaufalazwar.sibandarapp.ui.dialog.AddFarmerDialog;
 import com.mnaufalazwar.sibandarapp.ui.dialog.AddOrderItemDialog;
-import com.mnaufalazwar.sibandarapp.ui.sell.SellViewModel;
+import com.mnaufalazwar.sibandarapp.ui.dialog.AddPurchaseItemDialog;
 
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
-public class AddCustomerOrderActivity extends AppCompatActivity {
+public class AddPurchaseActivity extends AppCompatActivity {
 
-    public static final int RESULT_ADD_CUSTOMER_ORDER = 101;
-    public static final int REQUEST_ADD_CUSTOMER_ORDER = 100;
-    public static final String EXTRA_CUSTOMER = "extra_customer";
-    public static final String EXTRA_ORDER_LIST = "extra_order_list";
+    public static final int RESULT_ADD_PURCHASE  = 401;
+    public static final int REQUEST_ADD_PURCHASE = 400;
+    public static final String EXTRA_FARMER = "extra_farmer";
+    public static final String EXTRA_RESTOCK_LIST = "extra_restock_list";
     public static final String EXTRA_TRANSACTION_ID = "extra_transaction_id";
 
     private ProgressBar progressBar;
@@ -62,7 +50,7 @@ public class AddCustomerOrderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_customer_order);
+        setContentView(R.layout.activity_add_purchase);
 
         progressBar = findViewById(R.id.progressBar);
 
@@ -73,10 +61,10 @@ public class AddCustomerOrderActivity extends AppCompatActivity {
         tvNoOrder = findViewById(R.id.tvNoOrder);
 
         recyclerView = findViewById(R.id.rvOrderItem);
-        recyclerView.setLayoutManager(new LinearLayoutManager(AddCustomerOrderActivity.this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(AddPurchaseActivity.this));
         recyclerView.setHasFixedSize(true);
 
-        adapter = new OrderItemAdapter(AddCustomerOrderActivity.this);
+        adapter = new OrderItemAdapter(AddPurchaseActivity.this);
         adapter.setOnItemClickCallback(new OrderItemAdapter.OnItemClickCallback() {
             @Override
             public void onItemClicked(SingleOrderItemModel data, int position) {
@@ -91,9 +79,9 @@ public class AddCustomerOrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AddOrderItemDialog mAddOrderItemDialog = new AddOrderItemDialog();
+                AddPurchaseItemDialog mAddPurchaseItemDialog = new AddPurchaseItemDialog();
                 FragmentManager mFragmentManager = getSupportFragmentManager();
-                mAddOrderItemDialog.show(mFragmentManager, AddOrderItemDialog.class.getSimpleName());
+                mAddPurchaseItemDialog.show(mFragmentManager, AddPurchaseItemDialog.class.getSimpleName());
             }
         });
 
@@ -101,9 +89,9 @@ public class AddCustomerOrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AddCustomerDialog mAddCustomerDialog = new AddCustomerDialog();
+                AddFarmerDialog mAddFarmerDialog = new AddFarmerDialog();
                 FragmentManager mFragmentManager = getSupportFragmentManager();
-                mAddCustomerDialog.show(mFragmentManager, AddCustomerDialog.class.getSimpleName());
+                mAddFarmerDialog.show(mFragmentManager, AddFarmerDialog.class.getSimpleName());
             }
         });
 
@@ -111,17 +99,15 @@ public class AddCustomerOrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(AddCustomerOrderActivity.this, "pesanan ditambahkan", Toast.LENGTH_SHORT).show();
-                
-//                sendTransactionData(thisCustomerModel, singleOrderItemModels);
+                Toast.makeText(AddPurchaseActivity.this, "restock ditambahkan", Toast.LENGTH_SHORT).show();
 
-                AddCustomerOrderViewModel addCustomerOrderViewModel = new ViewModelProvider(AddCustomerOrderActivity.this,
+                AddPurchaseViewModel addPurchaseViewModel = new ViewModelProvider(AddPurchaseActivity.this,
                         new ViewModelProvider.NewInstanceFactory())
-                        .get(AddCustomerOrderViewModel.class);
+                        .get(AddPurchaseViewModel.class);
 
-                addCustomerOrderViewModel.setTransactionCode(thisCustomerModel, singleOrderItemModels);
+                addPurchaseViewModel.setTransactionCode(thisCustomerModel, singleOrderItemModels);
                 showLoading(true);
-                addCustomerOrderViewModel.getTransactionCode().observe(AddCustomerOrderActivity.this, new Observer<String>() {
+                addPurchaseViewModel.getTransactionCode().observe(AddPurchaseActivity.this, new Observer<String>() {
                     @Override
                     public void onChanged(String s) {
 
@@ -129,13 +115,12 @@ public class AddCustomerOrderActivity extends AppCompatActivity {
 
                         Intent intent = new Intent();
                         intent.putExtra(EXTRA_TRANSACTION_ID, transactionCode);
-                        intent.putExtra(EXTRA_CUSTOMER, thisCustomerModel);
-                        intent.putParcelableArrayListExtra(EXTRA_ORDER_LIST, singleOrderItemModels);
-                        setResult(RESULT_ADD_CUSTOMER_ORDER, intent);
+                        intent.putExtra(EXTRA_FARMER, thisCustomerModel);
+                        intent.putParcelableArrayListExtra(EXTRA_RESTOCK_LIST, singleOrderItemModels);
+                        setResult(RESULT_ADD_PURCHASE, intent);
                         finish();
 
                         showLoading(false);
-
                     }
                 });
             }
@@ -154,7 +139,7 @@ public class AddCustomerOrderActivity extends AppCompatActivity {
         }
     }
 
-    public AddOrderItemDialog.OnAddOrderItemListener addOrderItemListener = new AddOrderItemDialog.OnAddOrderItemListener() {
+    public AddPurchaseItemDialog.OnAddPurchaseItemListener addPurchaseItemListener = new AddPurchaseItemDialog.OnAddPurchaseItemListener() {
         @Override
         public void onOptionChoosen(SingleOrderItemModel singleOrderItemModel) {
 
@@ -170,11 +155,11 @@ public class AddCustomerOrderActivity extends AppCompatActivity {
         }
     };
 
-    public AddCustomerDialog.OnAddCustomerListener addCustomerListener
-            = new AddCustomerDialog.OnAddCustomerListener() {
+    public AddFarmerDialog.OnAddFarmerListener addFarmerListener
+            = new AddFarmerDialog.OnAddFarmerListener() {
         @Override
         public void onOptionChoosen(CustomerModel customerModel) {
-            Toast.makeText(AddCustomerOrderActivity.this, customerModel.getContactPerson() + " dari " + customerModel.getCompany() + " berhasil ditambahkan", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddPurchaseActivity.this, customerModel.getContactPerson() + " dari " + customerModel.getCompany() + " berhasil ditambahkan", Toast.LENGTH_SHORT).show();
             thisCustomerModel = customerModel;
         }
     };

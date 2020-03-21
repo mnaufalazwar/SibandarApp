@@ -61,6 +61,23 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        cardPurchase = root.findViewById(R.id.card_purchase);
+        cardPurchase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDirections navDirections = HomeFragmentDirections
+                        .actionNavHomeToNavPurchase();
+                Navigation.findNavController(v).navigate(navDirections);
+
+                Navigation.findNavController(v).addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+                    @Override
+                    public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+
+                    }
+                });
+            }
+        });
+
         cardFinance = root.findViewById(R.id.card_finance);
         cardFinance.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +93,24 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
+            }
+        });
 
+        cardReport = root.findViewById(R.id.card_report);
+        cardReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                NavDirections navDirections = HomeFragmentDirections
+                        .actionNavHomeToNavReport();
+                Navigation.findNavController(v).navigate(navDirections);
+
+                Navigation.findNavController(v).addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+                    @Override
+                    public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+
+                    }
+                });
             }
         });
     }

@@ -146,4 +146,34 @@ public class DataTransactionModel implements Parcelable {
         dest.writeString(transactionStatus);
         dest.writeByte((byte) (paid ? 1 : 0));
     }
+
+    public String getTotalTransactionNominal(){
+
+        int totalPrice = 0;
+        for(int i = 0 ; i < this.getListOrder().size() ; i ++){
+
+            int priceSingeOrderItem = 0;
+            if(this.getTransactionStatus().equals("order")){
+                priceSingeOrderItem =
+                        Integer.parseInt(this.getListOrder().get(i).getPriceKg()) * Integer.parseInt(this.getListOrder().get(i).getAmountOrderKg());
+            }
+            else if(this.getTransactionStatus().equals("siap")) {
+//                priceSingeOrderItem =
+//                        Integer.parseInt(list.get(position).getListOrder().get(i).getPriceKg()) * Integer.parseInt(list.get(position).getListOrder().get(i).getAmountSentKg());
+
+                priceSingeOrderItem =
+                        Integer.parseInt(this.getListOrder().get(i).getPriceKg()) * Integer.parseInt(this.getListOrder().get(i).getAmountOrderKg());
+            }
+            else {
+//                priceSingeOrderItem =
+//                        Integer.parseInt(list.get(position).getListOrder().get(i).getPriceKg()) * Integer.parseInt(list.get(position).getListOrder().get(i).getAmountDeliverKg());
+
+                priceSingeOrderItem =
+                        Integer.parseInt(this.getListOrder().get(i).getPriceKg()) * Integer.parseInt(this.getListOrder().get(i).getAmountOrderKg());
+            }
+
+            totalPrice += priceSingeOrderItem;
+        }
+        return  ("" + totalPrice);
+    }
 }

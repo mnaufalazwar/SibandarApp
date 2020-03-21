@@ -2,6 +2,7 @@ package com.mnaufalazwar.sibandarapp.ui.financial;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,19 +15,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mnaufalazwar.sibandarapp.R;
+import com.mnaufalazwar.sibandarapp.activity.PaymentDetailToPayActivity;
 import com.mnaufalazwar.sibandarapp.adapter.PaymentAdapter;
-import com.mnaufalazwar.sibandarapp.adapter.TransactionAdapter;
-import com.mnaufalazwar.sibandarapp.model.DataTransactionModel;
 import com.mnaufalazwar.sibandarapp.model.PaymentModel;
 
 import java.util.ArrayList;
 
 public class FinancialFragment extends Fragment {
+
+    FinancialViewModel financialViewModel;
+
+    private static String payType = "1";
 
     private ProgressBar progressBar;
     private TextView tvNoData;
@@ -57,14 +60,16 @@ public class FinancialFragment extends Fragment {
         btnSell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                payType = "1";
+                showSellPayment();
             }
         });
 
         btnPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                payType = "2";
+                showPurchaseCard();
             }
         });
 
@@ -77,16 +82,35 @@ public class FinancialFragment extends Fragment {
             @Override
             public void onItemClicked(PaymentModel data, int position) {
 
+                Intent intent = new Intent(getActivity(), PaymentDetailToPayActivity.class);
+
+                Log.d("DATA SEND EXTRA", "cards: " + data.getDataTransactionModels().size());
+
+                intent.putExtra(PaymentDetailToPayActivity.EXTRA_DATA_PAYMENT_TYPE, payType);
+                intent.putExtra(PaymentDetailToPayActivity.EXTRA_DATA_PAYMENT_IN, data);
+                intent.putExtra(PaymentDetailToPayActivity.EXTRA_DATA_PAYMENT_IN_POS, position);
+                startActivityForResult(intent, PaymentDetailToPayActivity.REQUEST_PAYMENT);
+
             }
         });
 
         rvPayment.setAdapter(paymentAdapter);
 
         //ViewModel
-        FinancialViewModel financialViewModel = new ViewModelProvider(getActivity(),
+        financialViewModel = new ViewModelProvider(getActivity(),
                 new ViewModelProvider.NewInstanceFactory())
                 .get(FinancialViewModel.class);
 
+        //show sell payment
+        showSellPayment();
+
+        //no data
+        if (thisPaymentModels.size() != 0) {
+            tvNoData.setVisibility(View.GONE);
+        }
+    }
+
+    private void showSellPayment(){
         financialViewModel.setDataPaymentModel();
         showLoading(true);
         tvNoData.setVisibility(View.GONE);
@@ -103,17 +127,45 @@ public class FinancialFragment extends Fragment {
                 }
             }
         });
+    }
 
-        //no data
-        if (thisPaymentModels.size() != 0) {
-            tvNoData.setVisibility(View.GONE);
-        }
+    private void showPurchaseCard(){
+        financialViewModel.setDataPaymentModelPurchase();
+        showLoading(true);
+        tvNoData.setVisibility(View.GONE);
+        financialViewModel.getDataPaymentModelPurchase().observe(getActivity(), new Observer<ArrayList<PaymentModel>>() {
+            @Override
+            public void onChanged(ArrayList<PaymentModel> paymentModels) {
+                thisPaymentModels = paymentModels;
+                paymentAdapter.setList(thisPaymentModels);
+                showLoading(false);
+                if (thisPaymentModels.size() != 0) {
+                    tvNoData.setVisibility(View.GONE);
+                }else {
+                    tvNoData.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (data != null) {
+            if (requestCode == PaymentDetailToPayActivity.REQUEST_PAYMENT) {
+                if (resultCode == PaymentDetailToPayActivity.RESULT_PAYMENT) {
+
+                    PaymentModel paymentModel = data.getParcelableExtra(PaymentDetailToPayActivity.EXTRA_DATA_PAYMENT_OUT);
+
+                    int pos = data.getIntExtra(PaymentDetailToPayActivity.EXTRA_DATA_PAYMENT_POS, -1);
+                    if (pos >= 0) {
+                        paymentAdapter.updateItem(pos, paymentModel);
+                    }
+                    tvNoData.setVisibility(View.GONE);
+                }
+            }
+        }
 
     }
 

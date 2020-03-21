@@ -119,4 +119,11 @@ public class SingleOrderItemModel implements Parcelable {
         dest.writeString(amountDeliverKg);
         dest.writeByte((byte) (ready ? 1 : 0));
     }
+
+    public String getTotalOrderPrice(){
+
+        int totalPriceSingleItem = Integer.parseInt(this.getPriceKg()) * Integer.parseInt(this.getAmountOrderKg());
+        return ("" + totalPriceSingleItem);
+
+    }
 }

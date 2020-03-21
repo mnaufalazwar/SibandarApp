@@ -1,6 +1,7 @@
 package com.mnaufalazwar.sibandarapp.adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,15 @@ import com.mnaufalazwar.sibandarapp.R;
 import com.mnaufalazwar.sibandarapp.custom.CustomOnItemClickListener;
 import com.mnaufalazwar.sibandarapp.model.CustomerModel;
 import com.mnaufalazwar.sibandarapp.model.DataTransactionModel;
+import com.mnaufalazwar.sibandarapp.model.SingleOrderItemModel;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
@@ -77,7 +86,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final TransactionAdapter.TransactionViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final TransactionAdapter.TransactionViewHolder holder, final int position) {
 
         holder.tvSubject.setText(list.get(position).getSubject());
 
@@ -106,7 +115,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
             totalPrice += priceSingeOrderItem;
         }
-        holder.tvTotalPrice.setText("" + totalPrice);
+        holder.tvTotalPrice.setText(list.get(position).getTotalTransactionNominal());
 
         String status = "";
         if(list.get(position).getTransactionStatus().equals("1")){
@@ -131,12 +140,19 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             holder.btnSendTransaction.setEnabled(false);
         }
 
+        if(list.get(position).getTransactionStatus().equals("kirim")){
+            holder.btnSendTransaction.setVisibility(View.GONE);
+            holder.btnTransactionDelivered.setVisibility(View.VISIBLE);
+        }
+
         holder.btnSendTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(activity, "kirim", Toast.LENGTH_SHORT).show();
                 holder.btnSendTransaction.setVisibility(View.GONE);
                 holder.btnTransactionDelivered.setVisibility(View.VISIBLE);
+
+                transactionSend(list.get(position));
             }
         });
 
@@ -144,8 +160,13 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             @Override
             public void onClick(View v) {
                 Toast.makeText(activity, "sampai", Toast.LENGTH_SHORT).show();
-                holder.btnSendTransaction.setVisibility(View.VISIBLE);
-                holder.btnTransactionDelivered.setVisibility(View.GONE);
+//                holder.btnSendTransaction.setVisibility(View.VISIBLE);
+//                holder.btnTransactionDelivered.setVisibility(View.GONE);
+
+                transactionDelivered(list.get(position));
+//                list.remove(position);
+//                setList(list);
+                removeItem(position);
             }
         });
 
@@ -177,5 +198,199 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             btnTransactionStatus = itemView.findViewById(R.id.btn_transaction_status);
             btnTransactionDelivered = itemView.findViewById(R.id.btn_transaction_delivered);
         }
+    }
+
+    private void transactionSend(DataTransactionModel dataTransactionModel){
+
+        ArrayList<SingleOrderItemModel> listOrder = dataTransactionModel.getListOrder();
+
+        String orders = "[";
+        for(int i = 0 ; i < listOrder.size() ; i ++){
+
+            String process;
+            if(listOrder.get(i).isReady()){
+                process = "siap";
+            }else {
+                process = "siap";
+            }
+
+            orders += "{";
+            orders += ("\"komoditas\":" + "\"" + listOrder.get(i).getCommodity() + "\",");
+            orders += ("\"harga\":" + "\"" + listOrder.get(i).getPriceKg() + "\",");
+            orders += ("\"kuantitas\":" + "\"" + listOrder.get(i).getAmountOrderKg() + "\",");
+            orders += ("\"orderStatus\":" + "\"" + process + "\"");
+            if(i == (listOrder.size()-1)){
+                orders += "}";
+            }else {
+                orders += "},";
+            }
+        }
+        orders += "]";
+
+        String jsonString = "{\"cardNumber\":\"" + dataTransactionModel.getTransactionCode() + "\"," +
+                "\"status\":\"kirim\"," +
+                "\"orders\":" + orders + "}";
+
+
+        Log.d("JSON KIRIM CARD :", jsonString);
+
+        try {
+
+            final JSONObject jsonObject = new JSONObject(jsonString);
+
+            Log.d("JSON KIRIM CARD::", jsonObject.toString());
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        URL url = new URL("http://192.168.100.78:8080/daily/updatesellcard");
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("POST");
+                        conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                        conn.setRequestProperty("Accept","application/json");
+                        conn.setDoOutput(true);
+                        conn.setDoInput(true);
+
+                        DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                        os.writeBytes(jsonObject.toString());
+
+                        os.flush();
+                        os.close();
+
+                        Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+                        Log.i("MSG" , conn.getResponseMessage());
+
+
+                        BufferedReader br;
+
+                        if (200 <= conn.getResponseCode() && conn.getResponseCode() <= 299) {
+                            br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        } else {
+                            br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                        }
+
+                        StringBuilder sb = new StringBuilder();
+                        String output;
+                        while ((output = br.readLine()) != null) {
+                            sb.append(output);
+                        }
+
+                        String response = sb.toString();
+
+                        Log.i("RRRRESPONSE UPDATE" , response);
+
+                        conn.disconnect();
+
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            thread.start();
+
+        } catch (Throwable t) {
+            Log.e("My App", "Could not parse malformed JSON: \"" + jsonString + "\"");
+        }
+
+    }
+
+    private void transactionDelivered(DataTransactionModel dataTransactionModel){
+
+        ArrayList<SingleOrderItemModel> listOrder = dataTransactionModel.getListOrder();
+
+        String orders = "[";
+        for(int i = 0 ; i < listOrder.size() ; i ++){
+
+            String process;
+            if(listOrder.get(i).isReady()){
+                process = "siap";
+            }else {
+                process = "siap";
+            }
+
+            orders += "{";
+            orders += ("\"komoditas\":" + "\"" + listOrder.get(i).getCommodity() + "\",");
+            orders += ("\"harga\":" + "\"" + listOrder.get(i).getPriceKg() + "\",");
+            orders += ("\"kuantitas\":" + "\"" + listOrder.get(i).getAmountOrderKg() + "\",");
+            orders += ("\"orderStatus\":" + "\"" + process + "\"");
+            if(i == (listOrder.size()-1)){
+                orders += "}";
+            }else {
+                orders += "},";
+            }
+        }
+        orders += "]";
+
+        String jsonString = "{\"cardNumber\":\"" + dataTransactionModel.getTransactionCode() + "\"," +
+                "\"status\":\"sampai\"," +
+                "\"orders\":" + orders + "}";
+
+
+        Log.d("JSON SAMPAI :", jsonString);
+
+        try {
+
+            final JSONObject jsonObject = new JSONObject(jsonString);
+
+            Log.d("JSON SAMPAI::", jsonObject.toString());
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        URL url = new URL("http://192.168.100.78:8080/daily/updatesellcard");
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("POST");
+                        conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                        conn.setRequestProperty("Accept","application/json");
+                        conn.setDoOutput(true);
+                        conn.setDoInput(true);
+
+                        DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+                        os.writeBytes(jsonObject.toString());
+
+                        os.flush();
+                        os.close();
+
+                        Log.i("STATUS", String.valueOf(conn.getResponseCode()));
+                        Log.i("MSG" , conn.getResponseMessage());
+
+
+                        BufferedReader br;
+
+                        if (200 <= conn.getResponseCode() && conn.getResponseCode() <= 299) {
+                            br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        } else {
+                            br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                        }
+
+                        StringBuilder sb = new StringBuilder();
+                        String output;
+                        while ((output = br.readLine()) != null) {
+                            sb.append(output);
+                        }
+
+                        String response = sb.toString();
+
+                        Log.i("RRRRESPONSE UPDATE" , response);
+
+                        conn.disconnect();
+
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            thread.start();
+
+        } catch (Throwable t) {
+            Log.e("My App", "Could not parse malformed JSON: \"" + jsonString + "\"");
+        }
+
     }
 }

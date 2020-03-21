@@ -88,7 +88,7 @@ public class TransactionPrepareToSendActivity extends AppCompatActivity {
         adapter.setList(singleOrderItemModels);
         adapter.setOnItemCeckCallback(new TransactionPTSAdapter.OnItemCheckCallback() {
             @Override
-            public void onItemChecked(SingleOrderItemModel data, int position) {
+            public void onItemChecked(SingleOrderItemModel data, int position, boolean isChecked) {
                 dataUpdate.add(data);
                 singleOrderItemModels.set(position, data);
                 thisDataTransactionModel.setListOrder(singleOrderItemModels);

@@ -22,11 +22,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class TransactionPrepareToSendViewModel extends ViewModel {
+public class AddPurchaseViewModel extends ViewModel {
 
     private MutableLiveData<String> mutableLiveData = new MutableLiveData<>();
 
-    void se(CustomerModel customerModel, ArrayList<SingleOrderItemModel> listOrder) {
+    void setTransactionCode(CustomerModel customerModel, ArrayList<SingleOrderItemModel> listOrder) {
 
         String subjectId = customerModel.getCompany();
 
@@ -53,12 +53,12 @@ public class TransactionPrepareToSendViewModel extends ViewModel {
         orders += "]";
 
         String jsonString = "{\"username\":\"testing01\"," +
-                "\"cardType\":\"1\"," +
+                "\"cardType\":\"2\"," +
                 "\"subjectId\":\"" + subjectId + "\"," +
                 "\"sentTime\":\"" + sentTime + "\"," +
                 "\"expectedPaymentDate\":\"" + sentTime + "\"," +
                 "\"orders\":" + orders + "," +
-                "\"paymentType\":\"1\"}";
+                "\"paymentType\":\"kontan\"}";
 
 
         Log.d("JSON KIRIM :", jsonString);

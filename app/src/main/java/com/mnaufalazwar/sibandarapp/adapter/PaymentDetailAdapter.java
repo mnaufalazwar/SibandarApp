@@ -30,7 +30,7 @@ public class PaymentDetailAdapter extends RecyclerView.Adapter<PaymentDetailAdap
     }
 
     public interface OnItemCheckCallback{
-        void onItemChecked(DataTransactionModel data, int position);
+        void onItemChecked(DataTransactionModel data, int position, boolean isChecked);
     }
 
     public PaymentDetailAdapter (Activity activity){
@@ -81,33 +81,33 @@ public class PaymentDetailAdapter extends RecyclerView.Adapter<PaymentDetailAdap
 
         holder.tvTanggal.setText(list.get(position).getPaymentDate());
 
-        int totalPrice = 0;
-        for(int i = 0 ; i < list.get(position).getListOrder().size() ; i ++){
+//        int totalPrice = 0;
+//        for(int i = 0 ; i < list.get(position).getListOrder().size() ; i ++){
+//
+//            int priceSingeOrderItem = 0;
+//            if(list.get(position).getTransactionStatus().equals("1")){
+//                priceSingeOrderItem =
+//                        Integer.parseInt(list.get(position).getListOrder().get(i).getPriceKg()) * Integer.parseInt(list.get(position).getListOrder().get(i).getAmountOrderKg());
+//            }
+//            else if(list.get(position).getTransactionStatus().equals("2")) {
+//                priceSingeOrderItem =
+//                        Integer.parseInt(list.get(position).getListOrder().get(i).getPriceKg()) * Integer.parseInt(list.get(position).getListOrder().get(i).getAmountSentKg());
+//            }
+//            else {
+//                priceSingeOrderItem =
+//                        Integer.parseInt(list.get(position).getListOrder().get(i).getPriceKg()) * Integer.parseInt(list.get(position).getListOrder().get(i).getAmountDeliverKg());
+//            }
+//
+//            totalPrice += priceSingeOrderItem;
+//        }
 
-            int priceSingeOrderItem = 0;
-            if(list.get(position).getTransactionStatus().equals("1")){
-                priceSingeOrderItem =
-                        Integer.parseInt(list.get(position).getListOrder().get(i).getPriceKg()) * Integer.parseInt(list.get(position).getListOrder().get(i).getAmountOrderKg());
-            }
-            else if(list.get(position).getTransactionStatus().equals("2")) {
-                priceSingeOrderItem =
-                        Integer.parseInt(list.get(position).getListOrder().get(i).getPriceKg()) * Integer.parseInt(list.get(position).getListOrder().get(i).getAmountSentKg());
-            }
-            else {
-                priceSingeOrderItem =
-                        Integer.parseInt(list.get(position).getListOrder().get(i).getPriceKg()) * Integer.parseInt(list.get(position).getListOrder().get(i).getAmountDeliverKg());
-            }
-
-            totalPrice += priceSingeOrderItem;
-        }
-
-        holder.tvOrderNilai.setText("Rp." + totalPrice);
+        holder.tvOrderNilai.setText("Rp." + list.get(position).getTotalTransactionNominal());
 
         holder.cbPaid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 list.get(position).setPaid(isChecked);
-                onItemCheckCallback.onItemChecked(list.get(position), position);
+                onItemCheckCallback.onItemChecked(list.get(position), position, isChecked);
             }
         });
     }
