@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="40dp"
     android:layout_gravity="center"
+    android:layout_marginStart="4dp"
     android:layout_marginTop="4dp"
+    android:layout_marginEnd="4dp"
     android:layout_marginBottom="4dp"
     android:orientation="vertical"
     card_view:cardCornerRadius="4dp">
@@ -36,8 +38,8 @@
             android:ellipsize="end"
             android:gravity="center_horizontal|center_vertical"
             android:maxLines="2"
-            tools:text="total transaksi"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:text="total transaksi" />
 
     </LinearLayout>
 

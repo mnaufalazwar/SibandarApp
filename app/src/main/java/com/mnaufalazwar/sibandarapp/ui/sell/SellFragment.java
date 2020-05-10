@@ -125,7 +125,8 @@ public class SellFragment extends Fragment {
 
                     dataTransactionModel.setSubject(customerModel.getCompany());
                     dataTransactionModel.setListOrder(listOrder);
-                    dataTransactionModel.setTransactionStatus("1");
+//                    dataTransactionModel.setTransactionStatus("1");
+                    dataTransactionModel.setTransactionStatus("order");
                     dataTransactionModel.setTransactionCode(data.getStringExtra(AddCustomerOrderActivity.EXTRA_TRANSACTION_ID));
 
                     list.add(0, dataTransactionModel);

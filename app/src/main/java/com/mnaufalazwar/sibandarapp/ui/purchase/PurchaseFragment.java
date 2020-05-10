@@ -24,6 +24,7 @@ import com.mnaufalazwar.sibandarapp.activity.AddCustomerOrderActivity;
 import com.mnaufalazwar.sibandarapp.activity.AddPurchaseActivity;
 import com.mnaufalazwar.sibandarapp.activity.TransactionPrepareToSendActivity;
 import com.mnaufalazwar.sibandarapp.adapter.TransactionAdapter;
+import com.mnaufalazwar.sibandarapp.adapter.TransactionAdapterPurchase;
 import com.mnaufalazwar.sibandarapp.model.CustomerModel;
 import com.mnaufalazwar.sibandarapp.model.DataTransactionModel;
 import com.mnaufalazwar.sibandarapp.model.SingleOrderItemModel;
@@ -37,7 +38,7 @@ public class PurchaseFragment extends Fragment {
     private Button btnRestockToday, btnRestockAll, btnAddRestock;
     private TextView tvNoRestock;
     private RecyclerView rvListRestock;
-    private TransactionAdapter transactionAdapter;
+    private TransactionAdapterPurchase transactionAdapterPurchase;
     private ArrayList<DataTransactionModel> list = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -70,8 +71,8 @@ public class PurchaseFragment extends Fragment {
         rvListRestock.setLayoutManager(new LinearLayoutManager(getContext()));
         rvListRestock.setHasFixedSize(true);
 
-        transactionAdapter = new TransactionAdapter(getActivity());
-        transactionAdapter.setOnItemClickCallback(new TransactionAdapter.OnItemClickCallback() {
+        transactionAdapterPurchase = new TransactionAdapterPurchase(getActivity());
+        transactionAdapterPurchase.setOnItemClickCallback(new TransactionAdapterPurchase.OnItemClickCallback() {
             @Override
             public void onItemClicked(DataTransactionModel data, int position) {
 
@@ -81,7 +82,7 @@ public class PurchaseFragment extends Fragment {
                 startActivityForResult(intent, TransactionPrepareToSendActivity.REQUEST_TRANSACTION_PTS);
             }
         });
-        rvListRestock.setAdapter(transactionAdapter);
+        rvListRestock.setAdapter(transactionAdapterPurchase);
 
         PurchaseViewModel purchaseViewModel = new ViewModelProvider(getActivity(),
                 new ViewModelProvider.NewInstanceFactory())
@@ -94,7 +95,7 @@ public class PurchaseFragment extends Fragment {
             @Override
             public void onChanged(ArrayList<DataTransactionModel> dataTransactionModels) {
                 list = dataTransactionModels;
-                transactionAdapter.setList(list);
+                transactionAdapterPurchase.setList(list);
                 showLoading(false);
                 if (list.size() != 0) {
                     tvNoRestock.setVisibility(View.GONE);
@@ -130,7 +131,7 @@ public class PurchaseFragment extends Fragment {
                     dataTransactionModel.setTransactionCode(data.getStringExtra(AddPurchaseActivity.EXTRA_TRANSACTION_ID));
 
                     list.add(0, dataTransactionModel);
-                    transactionAdapter.setList(list);
+                    transactionAdapterPurchase.setList(list);
                     tvNoRestock.setVisibility(View.GONE);
                 }
             }
@@ -142,7 +143,7 @@ public class PurchaseFragment extends Fragment {
 
                     int pos = data.getIntExtra(TransactionPrepareToSendActivity.EXTRA_DATA_TRANSACTION_POS, -1);
                     if (pos >= 0) {
-                        transactionAdapter.updateItem(pos, dataTransactionModel);
+                        transactionAdapterPurchase.updateItem(pos, dataTransactionModel);
                     }
                     tvNoRestock.setVisibility(View.GONE);
                 }

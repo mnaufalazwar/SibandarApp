@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.mnaufalazwar.sibandarapp.R;
 import com.mnaufalazwar.sibandarapp.adapter.PaymentDetailAdapter;
+import com.mnaufalazwar.sibandarapp.common.CommonEndpoint;
 import com.mnaufalazwar.sibandarapp.model.DataTransactionModel;
 import com.mnaufalazwar.sibandarapp.model.PaymentModel;
 
@@ -148,7 +149,12 @@ public class PaymentDetailToPayActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try{
-                        URL url = new URL("http://192.168.100.78:8080/payments/addpayment");
+
+                        String endpoint = "http://" + CommonEndpoint.IP + ":" + CommonEndpoint.PORT + "/payments/addpayment";
+
+//                        URL url = new URL("http://192.168.100.78:8080/payments/addpayment");
+
+                        URL url = new URL(endpoint);
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setRequestMethod("POST");
                         conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");

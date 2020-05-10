@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mnaufalazwar.sibandarapp.R;
+import com.mnaufalazwar.sibandarapp.common.NumberToRupiah;
 import com.mnaufalazwar.sibandarapp.model.ReportCardModel;
 
 import java.util.ArrayList;
@@ -75,7 +76,8 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportView
     @Override
     public void onBindViewHolder(@NonNull ReportViewHolder holder, int position) {
 
-        holder.tvNominal.setText(list.get(position).getNominal());
+//        holder.tvNominal.setText(list.get(position).getNominal());
+        holder.tvNominal.setText(NumberToRupiah.convertNumberToRupiah(list.get(position).getNominal()));
         holder.tvSubject.setText(list.get(position).getSubject());
         holder.tvTime.setText(list.get(position).getTime());
     }

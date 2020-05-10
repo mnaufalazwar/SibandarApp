@@ -23,6 +23,7 @@ import com.mnaufalazwar.sibandarapp.R;
 import com.mnaufalazwar.sibandarapp.activity.PaymentDetailToPayActivity;
 import com.mnaufalazwar.sibandarapp.adapter.PaymentAdapter;
 import com.mnaufalazwar.sibandarapp.adapter.ReportAdapter;
+import com.mnaufalazwar.sibandarapp.common.NumberToRupiah;
 import com.mnaufalazwar.sibandarapp.model.PaymentModel;
 import com.mnaufalazwar.sibandarapp.model.ReportCardModel;
 import com.mnaufalazwar.sibandarapp.ui.financial.FinancialViewModel;
@@ -101,35 +102,40 @@ public class ReportFragment extends Fragment {
         reportViewModel.getDataUtang().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                utang.setText(s);
+//                utang.setText(s);
+                utang.setText(NumberToRupiah.convertNumberToRupiah(s));
             }
         });
 
         reportViewModel.getDataPiutang().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                piutang.setText(s);
+//                piutang.setText(s);
+                piutang.setText(NumberToRupiah.convertNumberToRupiah(s));
             }
         });
 
         reportViewModel.getDataKeluar().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                uangKeluar.setText(s);
+//                uangKeluar.setText(s);
+                uangKeluar.setText(NumberToRupiah.convertNumberToRupiah(s));
             }
         });
 
         reportViewModel.getDataMasuk().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                uangMasuk.setText(s);
+//                uangMasuk.setText(s);
+                uangMasuk.setText(NumberToRupiah.convertNumberToRupiah(s));
             }
         });
 
         reportViewModel.getDataSaldo().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                saldo.setText(s);
+//                saldo.setText(s);
+                saldo.setText(NumberToRupiah.convertNumberToRupiah(s));
             }
         });
     }

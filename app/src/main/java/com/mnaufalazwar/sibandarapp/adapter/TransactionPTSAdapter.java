@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mnaufalazwar.sibandarapp.R;
+import com.mnaufalazwar.sibandarapp.common.NumberToRupiah;
 import com.mnaufalazwar.sibandarapp.model.SingleOrderItemModel;
 
 import java.util.ArrayList;
@@ -79,9 +80,9 @@ public class TransactionPTSAdapter extends RecyclerView.Adapter<TransactionPTSAd
 
         holder.tvOrderCommodity.setText(list.get(position).getCommodity());
         holder.tvOrderQuantity.setText("" + list.get(position).getAmountOrderKg());
-        holder.tvOrderPrice.setText(list.get(position).getPriceKg());
+        holder.tvOrderPrice.setText(NumberToRupiah.convertNumberToRupiah(list.get(position).getPriceKg()));
         int totalPriceSingleItem = Integer.parseInt(list.get(position).getPriceKg()) * Integer.parseInt(list.get(position).getAmountOrderKg());
-        holder.tvOrderTotalPrice.setText("" + totalPriceSingleItem);
+        holder.tvOrderTotalPrice.setText(NumberToRupiah.convertNumberToRupiah("" + totalPriceSingleItem));
 
         if(list.get(position).isReady()){
             holder.cbOrderReady.setChecked(true);

@@ -21,64 +21,108 @@
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/img_item_photo"
             android:layout_toRightOf="@id/img_item_photo"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_subject"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="Subject" />
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="3"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="start|left"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="Subject" />
 
                 <TextView
                     android:id="@+id/tv_total_price"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
                     android:ellipsize="end"
-                    android:gravity="center_horizontal"
+                    android:gravity="start|left"
                     android:maxLines="2"
                     tools:text="total price" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+
+                <FrameLayout
+                    android:id="@+id/line_ver"
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/colorPrimaryDark" />
 
                 <Button
                     android:id="@+id/btn_transaction_status"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="10"
+                    android:background="@drawable/btn_default_1"
                     android:ellipsize="end"
                     android:maxLines="2"
+                    android:textColor="@android:color/white"
                     android:textSize="12sp"
+                    android:visibility="gone"
                     tools:text="status" />
 
                 <Button
                     android:id="@+id/btn_send_transaction"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="10"
+                    android:background="@drawable/btn_default_1"
                     android:text="kirim"
+                    android:textColor="@android:color/white"
                     android:textSize="12sp" />
 
                 <Button
                     android:id="@+id/btn_transaction_delivered"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="10"
+                    android:background="@drawable/btn_default_1"
                     android:text="sampai"
+                    android:textColor="@android:color/white"
                     android:textSize="12sp"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 

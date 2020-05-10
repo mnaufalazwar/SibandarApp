@@ -34,10 +34,11 @@ public class MainNavigationActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+
+//        if(getSupportActionBar() != null){
+//            getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        }
+//        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);

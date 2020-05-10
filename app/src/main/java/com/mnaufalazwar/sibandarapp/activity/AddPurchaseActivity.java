@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.mnaufalazwar.sibandarapp.R;
 import com.mnaufalazwar.sibandarapp.adapter.OrderItemAdapter;
+import com.mnaufalazwar.sibandarapp.common.NumberToRupiah;
 import com.mnaufalazwar.sibandarapp.model.CustomerModel;
 import com.mnaufalazwar.sibandarapp.model.SingleOrderItemModel;
 import com.mnaufalazwar.sibandarapp.ui.dialog.AddCustomerDialog;
@@ -75,6 +76,11 @@ public class AddPurchaseActivity extends AppCompatActivity {
         adapter.setList(singleOrderItemModels);
         recyclerView.setAdapter(adapter);
 
+
+
+        btnSaveOrder.setEnabled(false);
+        btnAddOrderItem.setEnabled(false);
+
         btnAddOrderItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +98,8 @@ public class AddPurchaseActivity extends AppCompatActivity {
                 AddFarmerDialog mAddFarmerDialog = new AddFarmerDialog();
                 FragmentManager mFragmentManager = getSupportFragmentManager();
                 mAddFarmerDialog.show(mFragmentManager, AddFarmerDialog.class.getSimpleName());
+
+                btnAddOrderItem.setEnabled(true);
             }
         });
 
@@ -151,7 +159,11 @@ public class AddPurchaseActivity extends AppCompatActivity {
             for(int i = 0 ; i < singleOrderItemModels.size() ; i ++){
                 total += Integer.parseInt(singleOrderItemModels.get(i).getPriceKg().trim()) * Integer.parseInt(singleOrderItemModels.get(i).getAmountOrderKg().trim());
             }
-            tvTotalPriceOrder.setText("Total transaksi : Rp" + total);
+            tvTotalPriceOrder.setText(NumberToRupiah.convertNumberToRupiah("" + total));
+
+            if(singleOrderItemModels.size() > 0){
+                btnSaveOrder.setEnabled(true);
+            }
         }
     };
 

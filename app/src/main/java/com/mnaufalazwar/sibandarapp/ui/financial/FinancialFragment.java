@@ -1,6 +1,7 @@
 package com.mnaufalazwar.sibandarapp.ui.financial;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,9 +58,13 @@ public class FinancialFragment extends Fragment {
         tvNoData = view.findViewById(R.id.tvNoData);
 
         //action button
+        btnSell.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        btnPurchase.setBackgroundColor(getResources().getColor(R.color.colorBtnUnable));
         btnSell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnSell.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                btnPurchase.setBackgroundColor(getResources().getColor(R.color.colorBtnUnable));
                 payType = "1";
                 showSellPayment();
             }
@@ -68,6 +73,8 @@ public class FinancialFragment extends Fragment {
         btnPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnPurchase.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                btnSell.setBackgroundColor(getResources().getColor(R.color.colorBtnUnable));
                 payType = "2";
                 showPurchaseCard();
             }

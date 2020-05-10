@@ -6,36 +6,36 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="BERANDA" />
         <item
             android:id="@+id/nav_sell"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="jual" />
+            android:icon="@drawable/ic_menu_send"
+            android:title="JUAL" />
         <item
             android:id="@+id/nav_purchase"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="beli" />
+            android:icon="@drawable/ic_shopping_cart_black_24dp"
+            android:title="BELI" />
         <item
             android:id="@+id/nav_finance"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="keuangan" />
+            android:icon="@drawable/ic_attach_money_black_24dp"
+            android:title="PEMBAYARAN" />
         <item
             android:id="@+id/nav_report"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="laporan" />
+            android:icon="@drawable/ic_book_black_24dp"
+            android:title="LAPORAN" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="LAIN LAIN">
         <menu>
             <item
                 android:id="@+id/nav_account"
-                android:icon="@drawable/ic_menu_share"
-                android:title="akun" />
+                android:icon="@drawable/ic_account_circle_black_24dp"
+                android:title="Akun" />
             <item
                 android:id="@+id/nav_setting"
-                android:icon="@drawable/ic_menu_send"
-                android:title="pengaturan" />
+                android:icon="@drawable/ic_settings_black_24dp"
+                android:title="Pengaturan" />
         </menu>
     </item>
 

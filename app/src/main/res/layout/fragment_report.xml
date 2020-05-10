@@ -9,6 +9,7 @@
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_add_order"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +29,8 @@
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="8dp"
+        android:background="@android:color/white"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -43,20 +45,21 @@
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/utang"
+            android:id="@+id/labelUtangTitik"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/labelUtang"
             android:layout_toRightOf="@+id/labelUtang"
-            android:text="Utang isi" />
+            android:text=":"
+            android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/piutang"
+            android:id="@+id/utang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/utang"
-            android:layout_toRightOf="@+id/labelPiutang"
-            android:text="Piutang isi" />
+            android:layout_toEndOf="@+id/labelUtangTitik"
+            android:layout_toRightOf="@+id/labelUtang"
+            android:textColor="@color/colorAccent" />
 
         <TextView
             android:id="@+id/labelPiutang"
@@ -64,9 +67,24 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/labelUtang"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:text="Piutang"
             android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/labelPiutangTitik"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelUtangTitik"
+            android:layout_toRightOf="@+id/labelPiutang"
+            android:text=":" />
+
+        <TextView
+            android:id="@+id/piutang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/utang"
+            android:layout_toRightOf="@+id/labelPiutangTitik"
+            android:textColor="@color/colorAccent" />
 
         <TextView
             android:id="@+id/saldo"
@@ -76,14 +94,23 @@
             android:layout_alignParentRight="true"
             android:paddingStart="4dp"
             android:paddingLeft="4dp"
-            android:text="Saldo isi" />
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/labelSaldoTitik"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/saldo"
+            android:layout_toLeftOf="@+id/saldo"
+            android:text=":"
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/labelSaldo"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/saldo"
-            android:layout_toLeftOf="@+id/saldo"
+            android:layout_toStartOf="@+id/labelSaldoTitik"
+            android:layout_toLeftOf="@+id/labelSaldoTitik"
             android:text="Saldo"
             android:textColor="@android:color/black" />
 
@@ -96,15 +123,25 @@
             android:layout_alignParentRight="true"
             android:paddingStart="4dp"
             android:paddingLeft="4dp"
-            android:text="Uang masuk isi" />
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/labelUangMasukTitik"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelSaldoTitik"
+            android:layout_toStartOf="@+id/uangMasuk"
+            android:layout_toLeftOf="@+id/uangMasuk"
+            android:text=":"
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/labelUangMasuk"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/labelSaldo"
-            android:layout_toStartOf="@+id/uangMasuk"
-            android:layout_toLeftOf="@+id/uangMasuk"
+            android:layout_toStartOf="@+id/labelUangMasukTitik"
+            android:layout_toLeftOf="@+id/labelUangMasukTitik"
             android:text="Pemasukan"
             android:textColor="@android:color/black" />
 
@@ -117,15 +154,25 @@
             android:layout_alignParentRight="true"
             android:paddingStart="4dp"
             android:paddingLeft="4dp"
-            android:text="Uang Keluar isi" />
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/labelUangKeluarTitik"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelUangMasukTitik"
+            android:layout_toStartOf="@+id/uangKeluar"
+            android:layout_toLeftOf="@+id/uangKeluar"
+            android:text=":"
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/labelUangKeluar"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/labelUangMasuk"
-            android:layout_toStartOf="@+id/uangKeluar"
-            android:layout_toLeftOf="@+id/uangKeluar"
+            android:layout_toStartOf="@+id/labelUangKeluarTitik"
+            android:layout_toLeftOf="@+id/labelUangKeluarTitik"
             android:text="Pengeluaran"
             android:textColor="@android:color/black" />
 
@@ -136,6 +183,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="belum ada transaksi"

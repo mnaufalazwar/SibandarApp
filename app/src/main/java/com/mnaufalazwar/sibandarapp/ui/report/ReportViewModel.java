@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.mnaufalazwar.sibandarapp.common.CommonEndpoint;
 import com.mnaufalazwar.sibandarapp.model.DataTransactionModel;
 import com.mnaufalazwar.sibandarapp.model.PaymentModel;
 import com.mnaufalazwar.sibandarapp.model.ReportCardModel;
@@ -35,7 +36,8 @@ public class ReportViewModel extends ViewModel {
         AsyncHttpClient client = new AsyncHttpClient();
         final ArrayList<ReportCardModel> listItems = new ArrayList<>();
 
-        String url = "http://192.168.100.78:8080/payments/getfinance?username=testing01";
+        String url = "http://" + CommonEndpoint.IP + ":" + CommonEndpoint.PORT + "/payments/getfinance?username=testing01";
+//        String url = "http://192.168.100.78:8080/payments/getfinance?username=testing01";
 
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
@@ -56,7 +58,7 @@ public class ReportViewModel extends ViewModel {
                         model.setSubject(cashflowObj.getString("subjectId"));
                         model.setNominal(cashflowObj.getString("paid"));
                         model.setPaidId(cashflowObj.getString("_id"));
-                        model.setTime(cashflowObj.getString("createdAt"));
+                        model.setTime(cashflowObj.getString("createdAtString"));
 
                         JSONArray cards = cashflowObj.getJSONArray("cards");
                         String[] arr = new String[cards.length()];

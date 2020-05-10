@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.mnaufalazwar.sibandarapp.R;
 import com.mnaufalazwar.sibandarapp.adapter.OrderItemAdapter;
+import com.mnaufalazwar.sibandarapp.common.NumberToRupiah;
 import com.mnaufalazwar.sibandarapp.model.CustomerModel;
 import com.mnaufalazwar.sibandarapp.model.DataTransactionModel;
 import com.mnaufalazwar.sibandarapp.model.SingleOrderItemModel;
@@ -64,6 +66,10 @@ public class AddCustomerOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_customer_order);
 
+//        if(getActionBar() != null){
+//            getActionBar().hide();
+//        }
+
         progressBar = findViewById(R.id.progressBar);
 
         btnAddOrderItem = findViewById(R.id.btn_add_order_item);
@@ -87,6 +93,10 @@ public class AddCustomerOrderActivity extends AppCompatActivity {
         adapter.setList(singleOrderItemModels);
         recyclerView.setAdapter(adapter);
 
+
+        btnSaveOrder.setEnabled(false);
+        btnAddOrderItem.setEnabled(false);
+
         btnAddOrderItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +114,8 @@ public class AddCustomerOrderActivity extends AppCompatActivity {
                 AddCustomerDialog mAddCustomerDialog = new AddCustomerDialog();
                 FragmentManager mFragmentManager = getSupportFragmentManager();
                 mAddCustomerDialog.show(mFragmentManager, AddCustomerDialog.class.getSimpleName());
+
+                btnAddOrderItem.setEnabled(true);
             }
         });
 
@@ -112,8 +124,6 @@ public class AddCustomerOrderActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Toast.makeText(AddCustomerOrderActivity.this, "pesanan ditambahkan", Toast.LENGTH_SHORT).show();
-                
-//                sendTransactionData(thisCustomerModel, singleOrderItemModels);
 
                 AddCustomerOrderViewModel addCustomerOrderViewModel = new ViewModelProvider(AddCustomerOrderActivity.this,
                         new ViewModelProvider.NewInstanceFactory())
@@ -166,7 +176,11 @@ public class AddCustomerOrderActivity extends AppCompatActivity {
             for(int i = 0 ; i < singleOrderItemModels.size() ; i ++){
                 total += Integer.parseInt(singleOrderItemModels.get(i).getPriceKg().trim()) * Integer.parseInt(singleOrderItemModels.get(i).getAmountOrderKg().trim());
             }
-            tvTotalPriceOrder.setText("Total transaksi : Rp" + total);
+            tvTotalPriceOrder.setText(NumberToRupiah.convertNumberToRupiah("" + total));
+
+            if(singleOrderItemModels.size() > 0){
+                btnSaveOrder.setEnabled(true);
+            }
         }
     };
 

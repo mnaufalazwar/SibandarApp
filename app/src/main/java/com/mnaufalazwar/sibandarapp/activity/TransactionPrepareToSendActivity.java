@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.mnaufalazwar.sibandarapp.R;
 import com.mnaufalazwar.sibandarapp.adapter.OrderItemAdapter;
 import com.mnaufalazwar.sibandarapp.adapter.TransactionPTSAdapter;
+import com.mnaufalazwar.sibandarapp.common.CommonEndpoint;
 import com.mnaufalazwar.sibandarapp.model.CustomerModel;
 import com.mnaufalazwar.sibandarapp.model.DataTransactionModel;
 import com.mnaufalazwar.sibandarapp.model.SingleOrderItemModel;
@@ -157,7 +158,12 @@ public class TransactionPrepareToSendActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try{
-                        URL url = new URL("http://192.168.100.78:8080/daily/updatesellcard");
+
+                        String endpoint = "http://" + CommonEndpoint.IP + ":" + CommonEndpoint.PORT + "/daily/updatesellcard";
+
+//                        URL url = new URL("http://192.168.100.78:8080/daily/updatesellcard");
+
+                        URL url = new URL(endpoint);
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setRequestMethod("POST");
                         conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");

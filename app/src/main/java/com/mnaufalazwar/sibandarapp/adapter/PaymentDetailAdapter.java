@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mnaufalazwar.sibandarapp.R;
+import com.mnaufalazwar.sibandarapp.common.NumberToRupiah;
 import com.mnaufalazwar.sibandarapp.model.DataTransactionModel;
 import com.mnaufalazwar.sibandarapp.model.PaymentModel;
 import com.mnaufalazwar.sibandarapp.model.SingleOrderItemModel;
@@ -101,7 +102,7 @@ public class PaymentDetailAdapter extends RecyclerView.Adapter<PaymentDetailAdap
 //            totalPrice += priceSingeOrderItem;
 //        }
 
-        holder.tvOrderNilai.setText("Rp." + list.get(position).getTotalTransactionNominal());
+        holder.tvOrderNilai.setText(NumberToRupiah.convertNumberToRupiah(list.get(position).getTotalTransactionNominal()));
 
         holder.cbPaid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

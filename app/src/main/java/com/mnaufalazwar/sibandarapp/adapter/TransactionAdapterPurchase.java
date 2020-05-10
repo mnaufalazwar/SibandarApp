@@ -16,7 +16,6 @@ import com.mnaufalazwar.sibandarapp.R;
 import com.mnaufalazwar.sibandarapp.common.CommonEndpoint;
 import com.mnaufalazwar.sibandarapp.common.NumberToRupiah;
 import com.mnaufalazwar.sibandarapp.custom.CustomOnItemClickListener;
-import com.mnaufalazwar.sibandarapp.model.CustomerModel;
 import com.mnaufalazwar.sibandarapp.model.DataTransactionModel;
 import com.mnaufalazwar.sibandarapp.model.SingleOrderItemModel;
 
@@ -29,14 +28,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
+public class TransactionAdapterPurchase extends RecyclerView.Adapter<TransactionAdapterPurchase.ViewHolder> {
 
     private final ArrayList<DataTransactionModel> list = new ArrayList<>();
     private final Activity activity;
 
     private OnItemClickCallback onItemClickCallback;
 
-    public void setOnItemClickCallback(TransactionAdapter.OnItemClickCallback onItemClickCallback){
+    public void setOnItemClickCallback(TransactionAdapterPurchase.OnItemClickCallback onItemClickCallback){
         this.onItemClickCallback = onItemClickCallback;
     }
 
@@ -44,7 +43,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         void onItemClicked(DataTransactionModel data, int position);
     }
 
-    public TransactionAdapter (Activity activity){
+    public TransactionAdapterPurchase (Activity activity){
         this.activity = activity;
     }
 
@@ -82,13 +81,15 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     @NonNull
     @Override
-    public TransactionAdapter.TransactionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_transaction, parent, false);
-        return new TransactionViewHolder(view);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_transaction_purchase, parent, false);
+        return new ViewHolder(view);
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final TransactionAdapter.TransactionViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
         holder.tvSubject.setText(list.get(position).getSubject());
 
@@ -117,19 +118,27 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
             totalPrice += priceSingeOrderItem;
         }
-
         holder.tvTotalPrice.setText(NumberToRupiah.convertNumberToRupiah(list.get(position).getTotalTransactionNominal()));
 
-        String status = "";
-        if(list.get(position).getTransactionStatus().equals("order")){
-            status = "disiapkan";
-        }else if(list.get(position).getTransactionStatus().equals("kirim")){
-            status = "dikirim";
-        }else{
-            status = "diterima";
-        }
-        holder.btnTransactionStatus.setText(status);
-        holder.btnTransactionStatus.setEnabled(false);
+//        String status = "";
+//        if(list.get(position).getTransactionStatus().equals("1")){
+//            status = "disiapkan";
+//        }else if(list.get(position).getTransactionStatus().equals("2")){
+//            status = "dikirim";
+//        }else{
+//            status = "diterima";
+//        }
+//        holder.btnTransactionStatus.setText(status);
+//        holder.btnTransactionStatus.setEnabled(false);
+
+        holder.btnTransactionStatus.setText("rincian");
+        holder.btnTransactionStatus.setOnClickListener(new CustomOnItemClickListener(position, new CustomOnItemClickListener.OnItemClickCallback() {
+            @Override
+            public void onItemClicked(View view, int position) {
+                Toast.makeText(activity, list.get(position).getTransactionCode() + " clicked", Toast.LENGTH_SHORT).show();
+                onItemClickCallback.onItemClicked(list.get(position), position);
+            }
+        }));
 
         boolean allReady = true;
         for(int i = 0 ; i < list.get(position).getListOrder().size() ; i ++){
@@ -139,17 +148,15 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         }
         if(allReady){
             holder.btnSendTransaction.setEnabled(true);
+            holder.btnTransactionDelivered.setEnabled(true);
         }else{
             holder.btnSendTransaction.setEnabled(false);
+            holder.btnTransactionDelivered.setEnabled(false);
         }
 
         if(list.get(position).getTransactionStatus().equals("kirim")){
             holder.btnSendTransaction.setVisibility(View.GONE);
             holder.btnTransactionDelivered.setVisibility(View.VISIBLE);
-        }
-        else if(list.get(position).getTransactionStatus().equals("order")){
-            holder.btnSendTransaction.setVisibility(View.VISIBLE);
-            holder.btnTransactionDelivered.setVisibility(View.GONE);
         }
 
         holder.btnSendTransaction.setOnClickListener(new View.OnClickListener() {
@@ -177,13 +184,14 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             }
         });
 
-        holder.itemView.setOnClickListener(new CustomOnItemClickListener(position, new CustomOnItemClickListener.OnItemClickCallback() {
-            @Override
-            public void onItemClicked(View view, int position) {
-                Toast.makeText(activity, list.get(position).getTransactionCode() + " clicked", Toast.LENGTH_SHORT).show();
-                onItemClickCallback.onItemClicked(list.get(position), position);
-            }
-        }));
+//        holder.itemView.setOnClickListener(new CustomOnItemClickListener(position, new CustomOnItemClickListener.OnItemClickCallback() {
+//            @Override
+//            public void onItemClicked(View view, int position) {
+//                Toast.makeText(activity, list.get(position).getTransactionCode() + " clicked", Toast.LENGTH_SHORT).show();
+//                onItemClickCallback.onItemClicked(list.get(position), position);
+//            }
+//        }));
+
     }
 
     @Override
@@ -191,12 +199,12 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         return this.list.size();
     }
 
-    public class TransactionViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvSubject, tvTotalPrice;
         Button btnTransactionStatus, btnSendTransaction, btnTransactionDelivered;
 
-        public TransactionViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvSubject = itemView.findViewById(R.id.tv_subject);
@@ -204,6 +212,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             btnSendTransaction = itemView.findViewById(R.id.btn_send_transaction);
             btnTransactionStatus = itemView.findViewById(R.id.btn_transaction_status);
             btnTransactionDelivered = itemView.findViewById(R.id.btn_transaction_delivered);
+
         }
     }
 
@@ -353,12 +362,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                 @Override
                 public void run() {
                     try{
-
-                        String endpoint = "http://" + CommonEndpoint.IP + ":" + CommonEndpoint.PORT + "/daily/updatesellcard";
-
-//                        URL url = new URL("http://192.168.100.78:8080/daily/updatesellcard");
-
-                        URL url = new URL(endpoint);
+                        URL url = new URL("http://192.168.100.78:8080/daily/updatesellcard");
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setRequestMethod("POST");
                         conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");

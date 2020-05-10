@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.mnaufalazwar.sibandarapp.common.CommonEndpoint;
 import com.mnaufalazwar.sibandarapp.model.CustomerModel;
 import com.mnaufalazwar.sibandarapp.model.SingleOrderItemModel;
 
@@ -30,7 +31,7 @@ public class AddPurchaseViewModel extends ViewModel {
 
         String subjectId = customerModel.getCompany();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         Date dt = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(dt);
@@ -73,7 +74,11 @@ public class AddPurchaseViewModel extends ViewModel {
                 @Override
                 public void run() {
                     try{
-                        URL url = new URL("http://192.168.100.78:8080/daily/postsellcard");
+
+                        String endpoint = "http://" + CommonEndpoint.IP + ":" + CommonEndpoint.PORT + "/daily/postsellcard";
+//                        URL url = new URL("http://192.168.100.78:8080/daily/postsellcard");
+
+                        URL url = new URL(endpoint);
                         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                         conn.setRequestMethod("POST");
                         conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.mnaufalazwar.sibandarapp.ui.home.HomeFragment"
-        android:label="beranda"
+        android:label="BERANDA"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_nav_home_to_nav_sell"
@@ -27,7 +27,7 @@
     <fragment
         android:id="@+id/nav_sell"
         android:name="com.mnaufalazwar.sibandarapp.ui.sell.SellFragment"
-        android:label="jual"
+        android:label="JUAL"
         tools:layout="@layout/fragment_sell" >
         <action
             android:id="@+id/action_nav_sell_to_addNewOrderFrag"
@@ -37,31 +37,31 @@
     <fragment
         android:id="@+id/nav_purchase"
         android:name="com.mnaufalazwar.sibandarapp.ui.purchase.PurchaseFragment"
-        android:label="beli"
+        android:label="BELI"
         tools:layout="@layout/fragment_purchase" />
 
     <fragment
         android:id="@+id/nav_finance"
         android:name="com.mnaufalazwar.sibandarapp.ui.financial.FinancialFragment"
-        android:label="keuangan"
+        android:label="PEMBAYARAN"
         tools:layout="@layout/fragment_finance" />
 
     <fragment
         android:id="@+id/nav_account"
         android:name="com.mnaufalazwar.sibandarapp.ui.account.AccountFragment"
-        android:label="akun"
+        android:label="AKUN"
         tools:layout="@layout/fragment_account" />
 
     <fragment
         android:id="@+id/nav_report"
         android:name="com.mnaufalazwar.sibandarapp.ui.report.ReportFragment"
-        android:label="laporan"
+        android:label="LAPORAN"
         tools:layout="@layout/fragment_report" />
 
     <fragment
         android:id="@+id/nav_setting"
         android:name="com.mnaufalazwar.sibandarapp.ui.setting.SettingFragment"
-        android:label="pengaturan"
+        android:label="PENGATURAN"
         tools:layout="@layout/fragment_setting" />
     <fragment
         android:id="@+id/addNewOrderFrag"

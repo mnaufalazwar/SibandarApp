@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.mnaufalazwar.sibandarapp.common.CommonEndpoint;
 import com.mnaufalazwar.sibandarapp.model.DataTransactionModel;
 import com.mnaufalazwar.sibandarapp.model.PaymentModel;
 import com.mnaufalazwar.sibandarapp.model.SingleOrderItemModel;
@@ -32,7 +33,9 @@ public class FinancialViewModel extends ViewModel {
 
         AsyncHttpClient client = new AsyncHttpClient();
         final ArrayList<PaymentModel> listItems = new ArrayList<>();
-        String url = "http://192.168.100.78:8080/payments/getprepayments?username=testing01&cardType=1";
+
+        String url = "http://" + CommonEndpoint.IP + ":" + CommonEndpoint.PORT + "/payments/getprepayments?username=testing01&cardType=1";
+//        String url = "http://192.168.100.78:8080/payments/getprepayments?username=testing01&cardType=1";
 
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
