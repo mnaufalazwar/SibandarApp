@@ -121,12 +121,14 @@ public class FinancialFragment extends Fragment {
         financialViewModel.setDataPaymentModel();
         showLoading(true);
         tvNoData.setVisibility(View.GONE);
+        rvPayment.setVisibility(View.GONE);
         financialViewModel.getDataPaymentModel().observe(getActivity(), new Observer<ArrayList<PaymentModel>>() {
             @Override
             public void onChanged(ArrayList<PaymentModel> paymentModels) {
                 thisPaymentModels = paymentModels;
                 paymentAdapter.setList(thisPaymentModels);
                 showLoading(false);
+                rvPayment.setVisibility(View.VISIBLE);
                 if (thisPaymentModels.size() != 0) {
                     tvNoData.setVisibility(View.GONE);
                 }else {
@@ -140,12 +142,14 @@ public class FinancialFragment extends Fragment {
         financialViewModel.setDataPaymentModelPurchase();
         showLoading(true);
         tvNoData.setVisibility(View.GONE);
+        rvPayment.setVisibility(View.GONE);
         financialViewModel.getDataPaymentModelPurchase().observe(getActivity(), new Observer<ArrayList<PaymentModel>>() {
             @Override
             public void onChanged(ArrayList<PaymentModel> paymentModels) {
                 thisPaymentModels = paymentModels;
                 paymentAdapter.setList(thisPaymentModels);
                 showLoading(false);
+                rvPayment.setVisibility(View.VISIBLE);
                 if (thisPaymentModels.size() != 0) {
                     tvNoData.setVisibility(View.GONE);
                 }else {

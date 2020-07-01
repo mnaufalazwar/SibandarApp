@@ -11,6 +11,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.mnaufalazwar.sibandarapp.common.CommonEndpoint;
 import com.mnaufalazwar.sibandarapp.model.DataTransactionModel;
 import com.mnaufalazwar.sibandarapp.model.SingleOrderItemModel;
+import com.mnaufalazwar.sibandarapp.service.BaseService;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,11 +23,12 @@ import cz.msebera.android.httpclient.Header;
 public class PurchaseViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<DataTransactionModel>> mutableLiveData = new MutableLiveData<>();
+    private BaseService baseService = new BaseService();
 
     void setDataTransactionModel() {
 
         AsyncHttpClient client = new AsyncHttpClient();
-        final ArrayList<DataTransactionModel> listItems = new ArrayList<>();
+//        final ArrayList<DataTransactionModel> listItems = new ArrayList<>();
 
         String url = "http://" + CommonEndpoint.IP + ":" + CommonEndpoint.PORT + "/daily/getsellcards?username=testing01&cardType=2";
 //        String url = "http://192.168.100.78:8080/daily/getsellcards?username=testing01&cardType=2";
@@ -38,37 +40,40 @@ public class PurchaseViewModel extends ViewModel {
 
                     String result = new String(responseBody);
                     Log.d("RESPONSE GET", result);
-                    JSONObject responseObject = new JSONObject(result);
-                    JSONArray desiredCard = responseObject.getJSONArray("desiredCard");
-                    Log.d("desiredCard", ""+desiredCard.length());
 
-                    for(int i = 0 ; i < desiredCard.length() ; i ++){
-                        JSONObject card = desiredCard.getJSONObject(i);
+                    ArrayList<DataTransactionModel> listItems = baseService.parseResponseGetSellCardsToList(result);
 
-                        JSONArray orders = card.getJSONArray("orders");
-                        ArrayList<SingleOrderItemModel> singleOrderItemModels = new ArrayList<>();
-                        for (int j = 0 ; j < orders.length() ; j ++){
-                            JSONObject order = orders.getJSONObject(j);
-
-                            SingleOrderItemModel singleOrderItemModel = new SingleOrderItemModel();
-                            singleOrderItemModel.setCommodity(order.getString("komoditas"));
-                            singleOrderItemModel.setPriceKg(order.getString("harga"));
-                            singleOrderItemModel.setAmountOrderKg(order.getString("kuantitas"));
-                            if(order.getString("orderStatus").trim().equals("siap")){
-                                singleOrderItemModel.setReady(true);
-                            }
-
-                            singleOrderItemModels.add(singleOrderItemModel);
-                        }
-
-                        DataTransactionModel dataTransactionModel = new DataTransactionModel();
-                        dataTransactionModel.setSubject(card.getString("subjectId"));
-                        dataTransactionModel.setListOrder(singleOrderItemModels);
-                        dataTransactionModel.setTransactionCode(card.getString("_id"));
-                        dataTransactionModel.setTransactionStatus(card.getString("paymentCode"));
-
-                        listItems.add(dataTransactionModel);
-                    }
+//                    JSONObject responseObject = new JSONObject(result);
+//                    JSONArray desiredCard = responseObject.getJSONArray("desiredCard");
+//                    Log.d("desiredCard", ""+desiredCard.length());
+//
+//                    for(int i = 0 ; i < desiredCard.length() ; i ++){
+//                        JSONObject card = desiredCard.getJSONObject(i);
+//
+//                        JSONArray orders = card.getJSONArray("orders");
+//                        ArrayList<SingleOrderItemModel> singleOrderItemModels = new ArrayList<>();
+//                        for (int j = 0 ; j < orders.length() ; j ++){
+//                            JSONObject order = orders.getJSONObject(j);
+//
+//                            SingleOrderItemModel singleOrderItemModel = new SingleOrderItemModel();
+//                            singleOrderItemModel.setCommodity(order.getString("komoditas"));
+//                            singleOrderItemModel.setPriceKg(order.getString("harga"));
+//                            singleOrderItemModel.setAmountOrderKg(order.getString("kuantitas"));
+//                            if(order.getString("orderStatus").trim().equals("siap")){
+//                                singleOrderItemModel.setReady(true);
+//                            }
+//
+//                            singleOrderItemModels.add(singleOrderItemModel);
+//                        }
+//
+//                        DataTransactionModel dataTransactionModel = new DataTransactionModel();
+//                        dataTransactionModel.setSubject(card.getString("subjectId"));
+//                        dataTransactionModel.setListOrder(singleOrderItemModels);
+//                        dataTransactionModel.setTransactionCode(card.getString("_id"));
+//                        dataTransactionModel.setTransactionStatus(card.getString("paymentCode"));
+//
+//                        listItems.add(dataTransactionModel);
+//                    }
 
                     mutableLiveData.postValue(listItems);
                 }catch (Exception e){

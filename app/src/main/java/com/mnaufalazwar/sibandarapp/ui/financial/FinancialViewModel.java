@@ -118,7 +118,9 @@ public class FinancialViewModel extends ViewModel {
 
         AsyncHttpClient client = new AsyncHttpClient();
         final ArrayList<PaymentModel> listItems = new ArrayList<>();
-        String url = "http://192.168.100.78:8080/payments/getprepayments?username=testing01&cardType=2";
+
+        String url = "http://" + CommonEndpoint.IP + ":" + CommonEndpoint.PORT + "/payments/getprepayments?username=testing01&cardType=2";
+//        String url = "http://192.168.100.78:8080/payments/getprepayments?username=testing01&cardType=2";
 
         client.get(url, new AsyncHttpResponseHandler() {
             @Override
